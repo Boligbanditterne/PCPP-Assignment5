@@ -30,7 +30,9 @@ public class LongAdderPerformance {
              i -> exerciseLongAdder(threadCount, perThread, new SyncLongArrayAdder()));
     Mark7('u', info.apply("SyncLongArrayAdderPadded"), 
           i -> exerciseLongAdder(threadCount, perThread, new SyncLongArrayAdderPadded()));
-    Mark7('u', info.apply("WrappedAtomicLong"), 
+    Mark7('u', info.apply("SyncLongArrayAdderLessPad"), 
+          i -> exerciseLongAdder(threadCount, perThread, new SyncLongArrayAdderLessPad()));
+    /*Mark7('u', info.apply("WrappedAtomicLong"), 
           i -> exerciseLongAdder(threadCount, perThread, new WrappedAtomicLong()));
     Mark7('u', info.apply("MyAtomicLong"), 
           i -> exerciseLongAdder(threadCount, perThread, new MyAtomicLong()));
@@ -41,7 +43,7 @@ public class LongAdderPerformance {
     Mark7('u', info.apply("LongAdderArrayPadded"),
           i -> exerciseLongAdder(threadCount, perThread, new LongAdderArrayPadded()));
     Mark7('u', info.apply("WrappedLongAdder"), 
-          i -> exerciseLongAdder(threadCount, perThread, new WrappedLongAdder()));
+          i -> exerciseLongAdder(threadCount, perThread, new WrappedLongAdder()));*/
   }
 
   // Timing of a long adder
@@ -194,6 +196,36 @@ class SyncLongArrayAdderPadded implements ILongAdder {
   public SyncLongArrayAdderPadded() {
     for (int s=0; s<stripeCount * padding; s++)
       locks[s] = new Object();
+  }
+
+  public void add(long delta) {
+    final int s = (int)Thread.currentThread().threadId() & stripeMask, p = s * padding;
+    synchronized (locks[p]) {
+      counts[p] += delta;
+    }
+  }
+
+  public long longValue() { 
+    long result = 0;
+    for (int s=0; s<stripeCount; s++)
+      synchronized (locks[s * padding]) {
+        result += counts[s * padding];
+      }
+    return result;
+  }
+}
+
+class SyncLongArrayAdderLessPad implements ILongAdder {
+  private final static int logS = 6, stripeCount = 1 << logS, stripeMask = stripeCount - 1, padding = 16;
+  private final long[] counts = new long[stripeCount * padding];
+  private final Object[] locks = new Object[stripeCount * padding];
+
+  public SyncLongArrayAdderLessPad() {
+    for (int s=0; s<stripeCount * padding; s++)
+      if (s % padding == 0){ //
+        locks[s] = new Object();
+      } //
+      
   }
 
   public void add(long delta) {

@@ -111,10 +111,40 @@ These results resemble the expected results from the lecture.
 
 ### 9.3.2
 
-When using the padded version, it tries to ensure that the locks are spread out on seperate cache lines and therefore gets it own line. This avoids expensive cache misses.
-
+When using the padded version, it tries to ensure that the locks are spread out on seperate cache lines and therefore gets it own line. 
 
 ### 9.3.3
 
+***See LongAdderPerformance.java***
+
+SyncLongAdder              20        699332.9 us   51771.69          2
+SyncLongArrayAdder         20        173564.0 us   33642.90          2
+SyncLongArrayAdderPadded   20         23345.9 us     856.15         16
+SyncLongArrayAdderLessPad  20         69721.9 us    7947.52          4
+
+Unsuprisingly the new variant performs worse. Because the lock elements are now null, and never initiated they are not present in heap. This means that the padding is essentially removed and the effect of padding removed. 
+
 ### 9.4
 
+memory cover        8192 B        167406.9 us     840.96          2
+memory cover       11584 B        167819.1 us     547.88          2
+memory cover       16384 B        167164.6 us     290.12          2
+memory cover       23172 B        169875.6 us    1527.29          2
+memory cover       32772 B        172002.4 us    2100.03          2
+memory cover       46348 B        254225.1 us    2310.13          2
+memory cover       65544 B        316222.8 us    1492.57          2
+memory cover       92692 B        358835.8 us    3230.10          2
+memory cover      131088 B        389350.8 us    8911.21          2
+memory cover      185388 B        408143.3 us    7023.08          2
+memory cover      262180 B        430056.1 us    9699.73          2
+memory cover      370780 B        530138.1 us   15677.01          2
+memory cover      524364 B        619290.1 us   10816.78          2
+memory cover      741564 B        863415.7 us    4373.24          2
+memory cover     1048728 B       1064155.0 us   10593.49          2
+memory cover     1483124 B       1218676.1 us    4690.51          2
+memory cover     2097456 B       1366323.2 us   34641.94          2
+memory cover     2966252 B       1841236.9 us  524428.13          2
+memory cover     4194912 B       3014037.4 us   73211.02          2
+memory cover     5932500 B       5922524.4 us   87131.54          2
+
+The cpu has 32KB cache which can be seen by the increased time at > 32772. The results here are slightly worse than the i9 and m3 processors.

@@ -85,7 +85,6 @@ class Histogram1 implements Histogram {
 }
 
 // Classes to implement:
-
 class SynchronizedHistogram implements Histogram { 
   private final int[] counts;
 
@@ -208,9 +207,6 @@ class StripedHistogram implements Histogram {
   public int getSpan() {
     return counters[0].length(); // array length is final. We assume .length is fine to use.
   }
-
-  
-
 }
 
 
@@ -223,7 +219,6 @@ class LongAdderHistogram implements Histogram {
             counts[i] = new LongAdder();
         }
   }
-
 
   public void increment(int bin){
     counts[bin].increment();
@@ -242,4 +237,4 @@ class LongAdderHistogram implements Histogram {
     return counts.length;
   }
   
- }
+}

@@ -168,25 +168,39 @@ Unsuprisingly the new variant performs worse. Because the lock elements are now 
 
 | Benchmark    | Size (B) |  Mean (us) | Std. dev. | Count |
 |--------------|---------:|-----------:|----------:|------:|
-| memory cover |     8192 |   167406.9 |    840.96 |     2 |
-| memory cover |    11584 |   167819.1 |    547.88 |     2 |
-| memory cover |    16384 |   167164.6 |    290.12 |     2 |
-| memory cover |    23172 |   169875.6 |   1527.29 |     2 |
-| memory cover |    32772 |   172002.4 |   2100.03 |     2 |
-| memory cover |    46348 |   254225.1 |   2310.13 |     2 |
-| memory cover |    65544 |   316222.8 |   1492.57 |     2 |
-| memory cover |    92692 |   358835.8 |   3230.10 |     2 |
-| memory cover |   131088 |   389350.8 |   8911.21 |     2 |
-| memory cover |   185388 |   408143.3 |   7023.08 |     2 |
-| memory cover |   262180 |   430056.1 |   9699.73 |     2 |
-| memory cover |   370780 |   530138.1 |  15677.01 |     2 |
-| memory cover |   524364 |   619290.1 |  10816.78 |     2 |
-| memory cover |   741564 |   863415.7 |   4373.24 |     2 |
-| memory cover |  1048728 |  1064155.0 |  10593.49 |     2 |
-| memory cover |  1483124 |  1218676.1 |   4690.51 |     2 |
-| memory cover |  2097456 |  1366323.2 |  34641.94 |     2 |
-| memory cover |  2966252 |  1841236.9 | 524428.13 |     2 |
-| memory cover |  4194912 |  3014037.4 |  73211.02 |     2 |
-| memory cover |  5932500 |  5922524.4 |  87131.54 |     2 |
+| memory cover |     8192 |   168353.0 |   1425.17 |     2 |
+| memory cover |    11584 |   168358.0 |   1037.72 |     2 |
+| memory cover |    16384 |   168674.7 |   1883.80 |     2 |
+| memory cover |    23172 |   170074.6 |   2092.71 |     2 |
+| memory cover |    32772 |   175059.4 |   5118.59 |     2 |
+| memory cover |    46348 |   259958.7 |   4896.96 |     2 |
+| memory cover |    65544 |   319010.2 |   5446.49 |     2 |
+| memory cover |    92692 |   361273.9 |  10320.79 |     2 |
+| memory cover |   131088 |   378421.0 |   2638.81 |     2 |
+| memory cover |   185388 |   396057.8 |   2652.23 |     2 |
+| memory cover |   262180 |   424147.5 |   2363.33 |     2 |
+| memory cover |   370780 |   546129.1 |   1422.48 |     2 |
+| memory cover |   524364 |   673850.7 |    832.64 |     2 |
+| memory cover |   741564 |   870918.5 |   2014.23 |     2 |
+| memory cover |  1048728 |  1064921.4 |   2096.65 |     2 |
+| memory cover |  1483124 |  1213006.0 |   3603.36 |     2 |
+| memory cover |  2097456 |  1321167.6 |   9313.87 |     2 |
+| memory cover |  2966252 |  1567721.3 |  12829.20 |     2 |
+| memory cover |  4194912 |  2724619.9 |  42891.26 |     2 |
+| memory cover |  5932500 |  5291390.1 |  37316.18 |     2 |
+| memory cover |  8389820 |  7786469.2 |  53718.20 |     2 |
+| memory cover | 11864996 |  9765263.8 |  25568.77 |     2 |
+| memory cover | 16779640 | 11143189.4 |  27924.86 |     2 |
+| memory cover | 23729996 | 12071283.5 |  27312.28 |     2 |
+| memory cover | 33559284 | 12665702.4 |  30157.44 |     2 |
+| memory cover | 47459996 | 13203175.4 |  72569.92 |     2 |
+| memory cover | 67118572 | 13688421.3 |   7123.64 |     2 |
+| memory cover | 94919996 | 14036612.5 |   6541.46 |     2 |
+| memory cover | 134237144 | 14350949.1 |  34852.09 |     2 |
+| memory cover | 189839988 | 14592856.6 |  41935.23 |     2 |
+| memory cover | 268474284 | 15018693.3 |  34989.43 |     2 |
+| memory cover | 379679972 | 15231337.2 |  43038.65 |     2 |
 
-The cpu has 32KB cache which can be seen by the increased time at > 32772. The results here are slightly worse than the i9 and m3 processors.
+The CPU appears to have a 32 KB L1 cache, as the time increases above 32772 B. The results here are slightly worse than the i9 and m3 processors.
+
+At larger sizes we see the RAM latency. For the 379679972 B array size, (15231337.2 us × 1000(get nanoseconds)) / 134217728(the  total repititions of k=arr[k]) = 113.5 ns per access. This suggests an effective RAM access latency of approximately 110 ns, in line with the book's estimate.

@@ -59,7 +59,7 @@ public class TestWordStream {
    
     System.out.println("----------------------------------------");
     // 10.1.10:
-    cleanWords.stream().limit(20).map(str -> counts(str)).forEach(System.out::println);
+    cleanWords.stream().limit(20).map(str -> counts(str)).forEach(System.out::println); //see how limit affects, what happens if it it set later
 
     System.out.println("----------------------------------------");
     // 10.1.11:

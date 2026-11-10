@@ -59,6 +59,29 @@
 
 ***Make the same measurement for the executor-and-task version, still for 1, 2, 3, . . . , 8, 16, 32, 64, . . . , 2048 parallel tasks.***
 
+| Benchmark          | Threads | Mean (µs) | Std. dev. | Count|
+|--------------------|------:|----------:|---------:|---------:|
+| countSequential    |     – | 12424.3   |    13.15 |       32 |
+| countParallelTask  |     1 | 12547.3   |    31.73 |       32 |
+| countParallelTask  |     2 |  8808.1   |   228.34 |       32 |
+| countParallelTask  |     3 |  6481.8   |   148.25 |       64 |
+| countParallelTask  |     4 |  5112.2   |   236.29 |       64 |
+| countParallelTask  |     5 |  4666.0   |   236.11 |       64 |
+| countParallelTask  |     6 |  4983.2   |   331.21 |       64 |
+| countParallelTask  |     7 |  5151.1   |   268.66 |       64 |
+| countParallelTask  |     8 |  4867.5   |   152.18 |       64 |
+| countParallelTask  |     9 |  4334.2   |   152.92 |       64 |
+| countParallelTask  |    10 |  4022.8   |   116.02 |       64 |
+| countParallelTask  |    11 |  3750.2   |    66.78 |      128 |
+| countParallelTask  |    12 |  3425.6   |    88.62 |      128 |
+| countParallelTask  |    24 |  2678.5   |    34.47 |      128 |
+| countParallelTask  |    48 |  2382.6   |    20.31 |      128 |
+| countParallelTask  |    96 |  2239.8   |    31.30 |      128 |
+| countParallelTask  |   192 |  2229.9   |    94.22 |      128 |
+| countParallelTask  |   384 |  2144.7   |    18.81 |      128 |
+| countParallelTask  |   768 |  2141.5   |    29.92 |      128 |
+| countParallelTask  |  1536 |  2135.7   |    21.34 |      128 |
+
 ### 9.1.4
 
 ***Reflect and comment on the results; are they plausible?***
@@ -83,6 +106,7 @@ Ran with 5.000.000
 | class exercises09.CasHistogram       |    1577.9 |
 | class exercises09.AtomicHistogram    |    1564.0 |
 | class exercises09.StripedHistogram   |    1549.0 |
+| class exercises09.LongAdderHistogram   |    1532.0 |
 
 1. The results shows that the simple lock version performs the worst.
 
@@ -93,6 +117,10 @@ Ran with 5.000.000
 ### 9.1.5
 
 Striped histogram resembles LA7 the most. It uses a stripecount implementation without any padding.
+
+### 9.1.6
+
+Surpisingly does not improve.  Maybe slightly better than own striped implementation. Does not have any reads.
 
 ## 9.3
 
